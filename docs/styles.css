@@ -1,0 +1,124 @@
+:root {
+  --bg: #121510;
+  --fg: #efe8db;
+  --surface: #1c211c;
+  --surface-2: #262c25;
+  --muted: #b7b09f;
+  --accent: #d8d2c4;
+  --accent-fg: #16150f;
+  --border: color-mix(in oklab, var(--fg) 14%, transparent);
+  --pine: #8fa88a;
+  --gps: #4ea3d9;
+  --font-sans: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Fraunces", "Times New Roman", serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+button:not(:disabled) { cursor: pointer; }
+h1, h2 { font-family: var(--font-display); letter-spacing: -0.03em; text-wrap: balance; }
+.hidden { display: none !important; }
+
+.app-shell { position: relative; height: 100dvh; overflow: hidden; }
+.map-host { position: absolute; inset: 0; background: #1a1e19; }
+.leaflet-container { font-family: var(--font-sans); background: #1a1e19; }
+.leaflet-control-attribution {
+  background: color-mix(in oklab, var(--bg) 82%, transparent) !important;
+  color: var(--muted); font-size: 10px; border-radius: 4px;
+}
+.leaflet-control-attribution a { color: var(--pine); }
+.leaflet-bar { border: 1px solid var(--border) !important; border-radius: var(--radius-md) !important; overflow: hidden; box-shadow: none !important; }
+.leaflet-bar a { background: var(--surface) !important; color: var(--fg) !important; width: 40px !important; height: 40px !important; line-height: 40px !important; }
+.leaflet-bottom.leaflet-right { margin-bottom: 88px; margin-right: 8px; }
+
+.omap-img { position: absolute; left: 0; top: 0; max-width: none !important; pointer-events: none; user-select: none; }
+.poi-icon, .gps-icon { background: none !important; border: none !important; }
+.poi-chip {
+  display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px 0 6px;
+  border-radius: 999px; background: color-mix(in oklab, var(--bg) 78%, transparent);
+  border: 1px solid var(--border); color: var(--fg); font-size: 12px; font-weight: 500;
+  white-space: nowrap; backdrop-filter: blur(8px);
+}
+.poi-dot { width: 8px; height: 8px; border-radius: 99px; background: var(--pine); }
+.poi-dot-parking { background: var(--accent); }
+.gps-dot {
+  position: absolute; left: 50%; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px;
+  border-radius: 99px; background: var(--gps); border: 2px solid #f4f7fa;
+  box-shadow: 0 0 0 8px color-mix(in oklab, var(--gps) 28%, transparent);
+}
+
+.hud-top {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 20;
+  display: flex; justify-content: space-between; gap: 12px;
+  padding: calc(12px + env(safe-area-inset-top)) 12px 0; pointer-events: none;
+}
+.hud-top > * { pointer-events: auto; }
+.hud-brand {
+  padding: 10px 14px 12px; border-radius: var(--radius-lg);
+  background: color-mix(in oklab, var(--bg) 78%, transparent);
+  border: 1px solid var(--border); backdrop-filter: blur(12px);
+}
+.hud-kicker { margin: 0; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.hud-brand h1 { margin: 2px 0 0; font-size: clamp(1.15rem, 3vw, 1.45rem); font-weight: 560; line-height: 1.15; }
+
+.hud-left {
+  position: absolute; top: calc(96px + env(safe-area-inset-top)); left: 12px; z-index: 20;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.icon-btn, .icon-quiet {
+  width: 44px; height: 44px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); background: var(--surface); color: var(--fg);
+  font: 600 16px/1 var(--font-sans);
+  display: grid; place-items: center;
+}
+.icon-quiet { width: 36px; height: 36px; background: transparent; border: 0; color: var(--muted); }
+
+.hud-bottom {
+  position: absolute; left: 12px; right: 12px; bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 20; display: flex; justify-content: center;
+}
+.locate-btn {
+  min-height: 48px; padding: 0 18px; border: 1px solid var(--border); border-radius: 999px;
+  background: var(--accent); color: var(--accent-fg); font-size: 0.95rem; font-weight: 600;
+  box-shadow: 0 10px 30px color-mix(in oklab, #000 35%, transparent);
+}
+.locate-btn.is-live { background: var(--pine); color: #10140f; }
+
+.hud-panel {
+  position: absolute; z-index: 30; top: calc(12px + env(safe-area-inset-top));
+  left: 12px; right: 12px; max-width: 380px; max-height: calc(100dvh - 120px);
+  overflow: auto; padding: 16px; border-radius: var(--radius-xl);
+  background: var(--surface); border: 1px solid var(--border);
+  box-shadow: 0 18px 50px color-mix(in oklab, #000 40%, transparent);
+}
+@media (min-width: 720px) { .hud-panel { left: 68px; right: auto; width: 360px; } }
+.panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.panel-head h2 { margin: 0; font-size: 1.2rem; font-weight: 560; }
+.panel-lead, .panel-note { margin: 0 0 12px; color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+.panel-note { font-size: 0.82rem; }
+.layer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.layer-card {
+  height: 44px; border-radius: var(--radius-md); border: 1px solid var(--border);
+  background: var(--surface-2); color: var(--fg); font-size: 0.88rem; font-weight: 500;
+}
+.layer-card.is-active { background: var(--accent); color: var(--accent-fg); border-color: transparent; }
+.toggle-row, .slider-row { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; font-size: 0.9rem; }
+.toggle-row { flex-direction: row; align-items: center; justify-content: space-between; }
+.slider-row span { display: flex; justify-content: space-between; color: var(--muted); }
+.slider-row em { font-style: normal; color: var(--fg); font-variant-numeric: tabular-nums; }
+input[type="range"] { width: 100%; accent-color: var(--pine); }
+input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--pine); }
+.btn-secondary {
+  height: 44px; padding: 0 14px; border-radius: var(--radius-md);
+  border: 1px solid var(--border); background: var(--surface-2); color: var(--fg); font-weight: 500;
+}
+.gps-banner {
+  position: absolute; left: 12px; right: 12px; bottom: calc(76px + env(safe-area-inset-bottom));
+  z-index: 20; padding: 10px 12px; border-radius: var(--radius-md);
+  background: color-mix(in oklab, var(--bg) 82%, transparent); border: 1px solid var(--border);
+  color: var(--muted); font-size: 0.82rem; backdrop-filter: blur(10px);
+}
